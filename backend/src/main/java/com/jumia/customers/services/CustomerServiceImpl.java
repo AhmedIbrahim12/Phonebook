@@ -5,14 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.jumia.customers.cache.CountryInfoCache;
 import com.jumia.customers.dao.CustomerRepository;
 import com.jumia.customers.models.Customer;
-import com.jumia.customers.models.CustomerEntity;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -58,18 +56,14 @@ public class CustomerServiceImpl implements CustomerService {
 
   private Page<Customer> filterByValidity(Pageable pageable, Boolean valid) {
     List<String> patterns = countryInfoCache.getCountriesRegex();
-    long totalCount = customerRepository.countValidatedCustomers(patterns, valid);
-    List<CustomerEntity> result = customerRepository.findCustomersByValidity(pageable, patterns, valid);
-    return new PageImpl<>(result, pageable, totalCount)
+    return customerRepository.findCustomersByValidity(pageable, patterns, valid)
         .map(entity -> customerConverter.convertToDto(entity, valid));
   }
 
   private Page<Customer> filterByCountryAndValidity(Pageable pageable, String country, Boolean valid) {
     String countryCode = countryInfoCache.getCountryCode(country);
     List<String> patterns = Arrays.asList(countryInfoCache.getCountryRegex(country));
-    long totalCount = customerRepository.countValidatedCustomers(patterns, valid, countryCode);
-    List<CustomerEntity> result = customerRepository.findCustomersByValidity(pageable, patterns, valid, countryCode);
-    return new PageImpl<>(result, pageable, totalCount)
+    return customerRepository.findCustomersByValidity(pageable, patterns, valid, countryCode)
         .map(entity -> customerConverter.convertToDto(entity, country, valid));
   }
 }
