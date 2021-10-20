@@ -17,26 +17,18 @@ import com.jumia.customers.models.CustomerEntity;
 @Component
 public class CustomerConverter {
 
-  private final ModelMapper modelMapper = new ModelMapper();
+  private final ModelMapper modelMapper;
   private final CountryInfoCache countryInfoCache;
 
   @Autowired
-  public CustomerConverter(CountryInfoCache countryInfoCache) {
+  public CustomerConverter(ModelMapper modelMapper, CountryInfoCache countryInfoCache) {
+    this.modelMapper = modelMapper;
     this.countryInfoCache = countryInfoCache;
   }
 
   public Customer convertToDto(CustomerEntity customerEntity) {
     Customer customerDTO = modelMapper.map(customerEntity, Customer.class);
-    String phoneCode = customerEntity.getPhone().substring(0, 5);
-    String countryName = countryInfoCache.getCountryByCode(phoneCode);
-    String regex = countryInfoCache.getCountryRegex(countryName);
-    customerDTO.setCountryName(countryName);
-    customerDTO.setValid(Pattern.matches(regex, customerEntity.getPhone()));
-    return customerDTO;
-  }
-
-  public Customer convertToDto(CustomerEntity customerEntity, String countryName) {
-    Customer customerDTO = modelMapper.map(customerEntity, Customer.class);
+    String countryName = getCountryName(customerEntity);
     String regex = countryInfoCache.getCountryRegex(countryName);
     customerDTO.setCountryName(countryName);
     customerDTO.setValid(Pattern.matches(regex, customerEntity.getPhone()));
@@ -45,10 +37,22 @@ public class CustomerConverter {
 
   public Customer convertToDto(CustomerEntity customerEntity, Boolean valid) {
     Customer customerDTO = modelMapper.map(customerEntity, Customer.class);
-    String phoneCode = customerEntity.getPhone().substring(1, 4);
-    String countryName = countryInfoCache.getCountryByCode(phoneCode);
+    String countryName = getCountryName(customerEntity);
     customerDTO.setCountryName(countryName);
     customerDTO.setValid(valid);
+    return customerDTO;
+  }
+
+  private String getCountryName(CustomerEntity customerEntity) {
+    String phoneCode = customerEntity.getPhone().substring(0, 5);
+    return countryInfoCache.getCountryByCode(phoneCode);
+  }
+
+  public Customer convertToDto(CustomerEntity customerEntity, String countryName) {
+    Customer customerDTO = modelMapper.map(customerEntity, Customer.class);
+    String regex = countryInfoCache.getCountryRegex(countryName);
+    customerDTO.setCountryName(countryName);
+    customerDTO.setValid(Pattern.matches(regex, customerEntity.getPhone()));
     return customerDTO;
   }
 

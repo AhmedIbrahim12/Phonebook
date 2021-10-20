@@ -2,6 +2,7 @@ package com.jumia.customers.config;
 
 import javax.sql.DataSource;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,5 +19,10 @@ public class BeansConfiguration {
     dataSourceBuilder.password("admin");
     dataSourceBuilder.type(CustomDataSource.class);
     return dataSourceBuilder.build();
+  }
+
+  @Bean
+  public ModelMapper createModelMapper() {
+    return new ModelMapper();
   }
 }

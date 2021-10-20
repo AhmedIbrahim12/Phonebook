@@ -12,7 +12,6 @@ export default class CustomersService {
             "country": tableOptions.country,
             "valid": tableOptions.valid
         };
-
         return axios.get(this.SERVICE_URL, {params});
     }
 
