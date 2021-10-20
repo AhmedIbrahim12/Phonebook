@@ -16,6 +16,8 @@ import com.jumia.customers.models.Customer;
 import com.jumia.customers.services.CustomerService;
 import com.jumia.customers.utils.PageUtils;
 
+import io.swagger.v3.oas.annotations.Parameter;
+
 @RestController
 @CrossOrigin
 @RequestMapping(path = "/customers")
@@ -34,7 +36,9 @@ public class CustomersController {
       @RequestParam(name = "size", required = false, defaultValue = "10") int size,
       @RequestParam(name = "sortBy", required = false, defaultValue = "id") String sortBy,
       @RequestParam(name = "sortDirection", required = false, defaultValue = "ASC") String sortDirection,
+      @Parameter(description = "Filter by country")
       @RequestParam(name = "country", required = false) String country,
+      @Parameter(description = "Filter by validity")
       @RequestParam(name = "valid", required = false) Boolean valid) {
     Pageable pageable = PageUtils.createPageable(page, size, sortDirection, sortBy);
     return ResponseEntity.ok(customerService.getFilteredCustomers(pageable, country, valid));
