@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jumia.customers.models.CountryInfo;
 
+/**
+ * A cache for CountryInfo (name, code, validity rule) load from "countries.json" file
+ */
 @Component
 public class CountryInfoCache {
 

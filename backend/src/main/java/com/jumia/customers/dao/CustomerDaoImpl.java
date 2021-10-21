@@ -40,20 +40,22 @@ public class CustomerDaoImpl extends SimpleJpaRepository<CustomerEntity, Long> i
     TypedQuery<Long> count = getCountQuery(spec, CustomerEntity.class);
     setQueryParameters(count, spec.getParamValueMap());
     Long totalCount = count.getSingleResult();
-    
+
     TypedQuery<CustomerEntity> query = getQuery(spec, pageable);
     setQueryParameters(query, spec.getParamValueMap());
+    setPagingInfo(query, pageable);
+    return getPage(query.getResultList(), pageable, () -> totalCount);
+  }
 
+  private void setQueryParameters(TypedQuery query, Map<ParameterExpression, String> paramValueMap) {
+    paramValueMap.entrySet().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
+    paramValueMap.clear();
+  }
+
+  private void setPagingInfo(TypedQuery query, Pageable pageable) {
     if (pageable.isPaged()) {
       query.setFirstResult((int) pageable.getOffset());
       query.setMaxResults(pageable.getPageSize());
     }
-
-    return getPage(query.getResultList(), pageable, () -> totalCount);
-  }
-
-  private void setQueryParameters(TypedQuery<?> query, Map<ParameterExpression, String> paramValueMap) {
-    paramValueMap.entrySet().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
-    paramValueMap.clear();
   }
 }

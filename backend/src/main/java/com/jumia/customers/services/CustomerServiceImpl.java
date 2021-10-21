@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jumia.customers.cache.CountryInfoCache;
 import com.jumia.customers.dao.CustomerRepository;
@@ -29,11 +30,13 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<String> getCountries() {
     return countryInfoCache.getSortedCountryNames();
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Page<Customer> getFilteredCustomers(Pageable pageable, String country, Boolean valid) {
 
     if (country != null && valid == null) {

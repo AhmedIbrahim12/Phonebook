@@ -49,7 +49,7 @@ It was required to create a page that displays customers info such as name, phon
     * The chosen approach was to fetch only the filtered records using "REGEXP" and handle the pagination and sorting at DAO
       layer.
         * As per this [comment](https://github.com/xerial/sqlite-jdbc/issues/60#issuecomment-271064901) sqlite currently doesn't
-          support "REGEXP", so a workaround was registering the REGEXP as a CDF.
+          support "REGEXP", so a workaround was registering the REGEXP as a UDF.
           See [CustomeDataSource](https://github.com/AhmedIbrahim12/Phonebook/blob/master/backend/src/main/java/com/jumia/customers/config/CustomDataSource.java)
           for registering the REGEXP for usage.
 

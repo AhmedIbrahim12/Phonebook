@@ -9,7 +9,7 @@ import org.sqlite.Function;
 
 /**
  * As there's currently no support for REGEXP function with SQLite
- * this registers the REGEXP as a customer defined function to each connection
+ * this registers the REGEXP as a user defined function to each connection
  * for general usage
  */
 public class CustomDataSource extends SimpleDriverDataSource {
