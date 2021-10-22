@@ -15,6 +15,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.jumia.customers.models.CustomerEntity;
 
+/**
+ * A JPA Specification to find customers filtered either by validity or both validity & country
+ */
 public class CustomersSpecification implements Specification<CustomerEntity> {
 
   private String countryCode;

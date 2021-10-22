@@ -104,5 +104,5 @@ It was required to create a page that displays customers info such as name, phon
 * Filter by country (Cameroon) and only invalid
   ![](manual/filterByCountryAndInvalid.PNG)
 
-* Swagger doc
+* Swagger API Documentation
   ![](manual/swagger.PNG)
