@@ -29,8 +29,12 @@ import com.jumia.customers.config.CustomDataSource;
 @PropertySource("application.properties")
 public class DatabaseTestConfiguration {
 
-  @Autowired
   private Environment env;
+
+  @Autowired
+  public DatabaseTestConfiguration(Environment env) {
+    this.env = env;
+  }
 
   @Bean
   public DataSource dataSource() {

@@ -3,4 +3,6 @@ export default interface TableOptions {
     itemsPerPage: number;
     country: any;
     valid: any;
+    sortBy: string[];
+    sortDesc: boolean[];
 }

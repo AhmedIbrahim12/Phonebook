@@ -68,7 +68,9 @@ export default class CustomersWidget extends Vue {
     page: 1,
     itemsPerPage: 10,
     country: null,
-    valid: null
+    valid: null,
+    sortBy: [''],
+    sortDesc: [false]
   };
   private totalCustomers = 0;
   private loading = false;
@@ -79,14 +81,14 @@ export default class CustomersWidget extends Vue {
   }
 
   @Watch('tableOptions', {deep: true})
-  onOptionsChanged(val: TableOptions, oldVal: TableOptions) {
+  onOptionsChanged() {
     this.loadTableData();
   }
 
   private createGridHeaders() {
     this.headers = [{text: 'Name', value: 'name'},
       {text: 'Phone', value: 'phone'},
-      {text: 'Country', value: 'countryName'},
+      {text: 'Country', value: 'countryName', sortable: false},
       {text: 'Status', value: 'valid', sortable: false}];
   }
 
@@ -107,8 +109,14 @@ export default class CustomersWidget extends Vue {
   }
 
   private onCountryChange(value: string) {
-    this.tableOptions.page = 1;
+    this.resetSortAndPagination();
     this.tableOptions.country = value;
+  }
+
+  private resetSortAndPagination() {
+    this.tableOptions.page = 1;
+    this.tableOptions.sortBy = [''];
+    this.tableOptions.sortDesc = [false];
   }
 
   private loadCountries() {
@@ -117,7 +125,7 @@ export default class CustomersWidget extends Vue {
 
   private loadTableData() {
     this.loading = true;
-    customersService.getTableData(this.tableOptions).then(resp => {
+    customersService.getCustomers(this.tableOptions).then(resp => {
       this.customers = resp.data.content;
       this.totalCustomers = resp.data.totalElements;
       this.loading = false;

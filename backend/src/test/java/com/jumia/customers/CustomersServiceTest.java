@@ -146,6 +146,7 @@ public class CustomersServiceTest {
     // Filtering by country = Uganda, valid = false
     Pageable pageable = Pageable.unpaged();
     Page<Customer> page = customerService.getFilteredCustomers(pageable, "Uganda", false);
+
     // Then
     // 2 elements are returned country = Uganda, validity = false
     Assert.assertEquals(2, page.getTotalElements());
@@ -157,6 +158,7 @@ public class CustomersServiceTest {
     // When
     // Filtering by country = Uganda, valid = true
     page = customerService.getFilteredCustomers(pageable, "Uganda", true);
+    
     // Then
     // 1 element is returned country = Uganda, validity = true
     Assert.assertEquals(1, page.getTotalElements());

@@ -5,12 +5,14 @@ export default class CustomersService {
 
     private SERVICE_URL = axios.defaults.baseURL + "/customers";
 
-    getTableData(tableOptions: TableOptions): AxiosPromise<any> {
+    getCustomers(tableOptions: TableOptions): AxiosPromise<any> {
         const params = {
             "page": tableOptions.page - 1,
             "size": tableOptions.itemsPerPage,
             "country": tableOptions.country,
-            "valid": tableOptions.valid
+            "valid": tableOptions.valid,
+            "sortBy": tableOptions.sortBy[0],
+            "sortDirection": tableOptions.sortDesc[0] ? "DESC" : "ASC"
         };
         return axios.get(this.SERVICE_URL, {params});
     }
