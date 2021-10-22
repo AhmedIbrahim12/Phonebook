@@ -76,10 +76,7 @@ public class CountryInfoCache {
   }
 
   public String getCountryByCode(String code) {
-    if (!codeToNameMap.containsKey(code)) {
-      return "";
-    }
-    return codeToNameMap.get(code);
+    return codeToNameMap.getOrDefault(code, "");
   }
 
   public List<String> getCountriesRegex() {
