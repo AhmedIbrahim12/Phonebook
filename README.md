@@ -19,7 +19,7 @@ Backend
 
 * JDK: 1.8
 * Maven: 3.6.2
-* Spring boot: 2.5.5
+* Spring Boot: 2.5.5
 * Sqlite: 3.16.1
 * Jackson object mapper: 2.12.5
 * Model mapper: 2.4.4
@@ -29,16 +29,17 @@ Backend
 
 It was required to create a page that displays customers info such as name, phone number, country and number's validity.
 
-* Implement Filtering by phone number validity, country or both.
-* Implement Pagination (bonus requirement).
-* Add API documentation using Swagger.
+* Implement Filtering by country, phone number validity or both.
+* Implement Pagination, Sorting by name and phone (bonus requirement).
+* Add API documentation (bonus requirement).
 * Add unit test for services.
 * Dockerize the project.
 
 ## Available data
 
 * A sqlite database file with customers data [sample.db].
-* A json file with countries info (country name, country code, phone validity rule) [customers.json].
+* A json file with countries info (country name, country code, phone validity rule)
+  [customers.json](https://github.com/AhmedIbrahim12/Phonebook/blob/master/backend/src/main/resources/countries.json).
 
 ## Challenges
 
@@ -55,21 +56,53 @@ It was required to create a page that displays customers info such as name, phon
 
 ## Enhancements plan for existing code
 
+* Add more validations on the backend.
 * Securing the endpoints.
 
 ## Dockerizing the app
 
-* An alpine based image with support for JDK 8 was used to dockerize the application.
+* An alpine based openJDK 8 image was used to dockerize the application.
 
 ## How to run the project
 
-* Go to build folder (Contains the jar and db file).
-* Run " docker-compose up " in command line.
-* Open the app on http://localhost:8080/
+1. Clone the project
+   ```sh
+   git clone https://github.com/AhmedIbrahim12/Phonebook.git
+   ```
+2. Move to /Phonebook and run
+   ```sh
+   mvn clean package
+   ```
+3. Move to /Phonebook/backend and run
+   ```sh
+   docker-compose up
 
-Run can also be done from inside the project by
+4. The application is now up and can be accessed via
+   ```sh
+   http://localhost:8080/
+5. API Documentation can be accessed via
+   ```sh
+   http://localhost:8080/swagger-ui.html
 
-* Run "mvn clean package" to build the project and generate executable jar.
-* Open backend module.
-* Run " docker-compose up ".
-* open App on http://localhost:8080/
+## Run samples
+
+* Unfiltered paginated result
+  ![](manual/findAll.PNG)
+
+* Only valid
+  ![](manual/filterValid.PNG)
+
+* Only invalid
+  ![](manual/filterInvalid.PNG)
+
+* Filter by country (Cameroon)
+  ![](manual/filterByCountry.PNG)
+
+* Filter by country (Cameroon) and only valid
+  ![](manual/filterByCountryAndValid.PNG)
+
+* Filter by country (Cameroon) and only invalid
+  ![](manual/filterByCountryAndInvalid.PNG)
+
+* Swagger doc
+  ![](manual/swagger.PNG)
