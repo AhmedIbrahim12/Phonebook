@@ -1,5 +1,7 @@
 package com.jumia.customers;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -158,7 +161,7 @@ public class CustomersServiceTest {
     // When
     // Filtering by country = Uganda, valid = true
     page = customerService.getFilteredCustomers(pageable, "Uganda", true);
-    
+
     // Then
     // 1 element is returned country = Uganda, validity = true
     Assert.assertEquals(1, page.getTotalElements());
@@ -166,5 +169,24 @@ public class CustomersServiceTest {
       Assert.assertEquals("Uganda", customer.getCountryName());
       Assert.assertEquals(true, customer.isValid());
     });
+  }
+
+  @Test
+  public void testSortingByNameFilteredByCountry() {
+    // Given
+    // Seven customers were defined, 3 of them are in Uganda
+
+    // When
+    // Filtering by country = Uganda, Sorted by name ascendingly
+    Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name"));
+    Page<Customer> page = customerService.getFilteredCustomers(pageable, "Uganda", null);
+
+    // Then
+    // 3 elements are returned, with country set to Uganda and sorted by name
+    Assert.assertEquals(3, page.getTotalElements());
+    List<Customer> content = page.getContent();
+    Assert.assertEquals(content.get(0).getName(), "Invalid Uganda");
+    Assert.assertEquals(content.get(1).getName(), "Invalid Uganda 2");
+    Assert.assertEquals(content.get(2).getName(), "Valid Uganda");
   }
 }
